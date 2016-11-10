@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,9 @@ import java.util.List;
 public class GameFragment extends Fragment {
 
     private LevelEngineer mEngineer;
-    private ArrayList mGrid;
+    private SparseIntArray mGrid;
     private GridLayout mGridLayout;
+    private ImageView mCurrentTile;
 
     public final String TAG = "Grid";
     //private ImageView mTile;
@@ -33,17 +35,20 @@ public class GameFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_game, container, false);
         mEngineer = new LevelEngineer(getContext());
-        mEngineer.setGrid();
+        mEngineer.orderGrid();
         mGrid = mEngineer.getGrid();
         GridLayout mGridLayout = (GridLayout) v.findViewById(R.id.LevelGrid);
+        ImageView mCurrentTile = (ImageView) v.findViewById(R.id.tile);
 
-/** TODO: 10/31/2016 Encapsulate Grid build in LevelBuilder
- *  It's important that the fragment knows nothing about how a level is built.
- *  This allows for the builder to be used in any class.
- */
+        /** TODO: 10/31/2016 Encapsulate Grid build in LevelBuilder
+         *  It's important that the fragment knows nothing about how a level is built.
+         *  This allows for the builder to be used in any class.
+         */
 
         for (int i = 0; i < 81; i++) {
-            View mTile = inflater.inflate(R.layout.tile, null);
+
+            ImageView mTile = (ImageView) inflater.inflate(R.layout.tile, null);
+            mTile.setImageResource(mGrid.get(i));
             mGridLayout.addView(mTile);
         }
 

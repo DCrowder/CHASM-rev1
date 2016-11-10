@@ -1,6 +1,7 @@
 package com.gmail.dtcrowder.dev.chasm;
 
 import android.content.Context;
+import android.util.SparseIntArray;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface LevelBuilder {
 
-    List<ImageView> buildGrid();
+    SparseIntArray buildGrid();
 
     void buildHeroes();
 
