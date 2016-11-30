@@ -1,5 +1,7 @@
 package com.gmail.dtcrowder.dev.chasm;
 
+import android.support.v4.util.SparseArrayCompat;
+
 /**
  * Created by David Crowder on 11/3/2016.
  *
@@ -8,18 +10,9 @@ package com.gmail.dtcrowder.dev.chasm;
  * This will initially be held in sqlite but will be moved to firebase (11/3/16).
  */
 
-public class LevelLab implements Level {
+public class LevelLab {
 
-    private int[][][] mCurrentLevel;
+    private int LevelIndex;
+    private SparseArrayCompat<Level> Levels;
 
-    private int currentLevel(int index) {
-        // Grab from existing fetcher class
-        return 0;
-    }
-
-    @Override
-    public int[][][] fetchLevel() {
-
-        return new int[0][][];
-    }
 }

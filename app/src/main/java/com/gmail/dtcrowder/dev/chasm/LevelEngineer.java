@@ -1,10 +1,8 @@
 package com.gmail.dtcrowder.dev.chasm;
 
-import android.content.Context;
+
 import android.support.v4.util.ArrayMap;
-import android.support.v4.util.SparseArrayCompat;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
@@ -18,27 +16,27 @@ import java.util.ArrayList;
 public class LevelEngineer {
 
     private CurrentLevelBuilder mBuilder;
-    private SparseIntArray mGrid;
-    private SparseIntArray mHeroes;
-    private SparseIntArray mEnemies;
-    private Context mContext;
+    private ArrayMap<Position, Integer> mGrid;
+    private ArrayMap mHeroes;
+    private ArrayMap mEnemies;
+
+
     public static final String TAG = "Engineer";
 
-    public LevelEngineer(Context context) {
+    public LevelEngineer(Level level, Hero hero) {
         Log.d(TAG, "LevelEngineer constructor called");
-        mContext = context;
-        mBuilder = new CurrentLevelBuilder(mContext);
+
+        mBuilder = new CurrentLevelBuilder(hero);
     }
 
-    public SparseIntArray getGrid() {
+    public ArrayMap<Position, Integer> getGrid() {
         return mGrid;
     }
 
     public void orderGrid() {
-        Log.d(TAG, "setGrid() called");
+        Log.d(TAG, "orderGrid() called");
+        mGrid = new ArrayMap<>();
         mGrid = mBuilder.buildGrid();
-
-
     }
 
 
@@ -50,38 +48,47 @@ public class LevelEngineer {
 
         private static final String TAG = "Builder";
 
-        private Context mContext;
-        private GridLayout mGrid;
-        private SparseIntArray tiles;
-        private final int GRID_SIZE;       // Currently unchanging.  Change to gridlayout's current value later.
+        private Hero mHero;
 
-        public CurrentLevelBuilder(Context context) {
+        private ArrayMap<Position, Integer> tiles;
+        private final int LENGTH;       // Currently unchanging.
+        private final int WIDTH;       // Currently unchanging.
+        private final int HEIGHT;       // Currently unchanging.
+        private final int GRID_SIZE;       // Currently unchanging.
+
+        CurrentLevelBuilder(Hero hero) {
             Log.d(TAG, "Builder constructor called");
-            mContext = context;
-            tiles = new SparseIntArray();                 // Create a new ArrayList of tiles for the builder
-            GRID_SIZE = 81;
+            mHero = hero;
+            tiles = new ArrayMap<>();                 // Create a new ArrayMap of tiles for the builder
+            LENGTH = 50;
+            WIDTH = 50;
+            HEIGHT = 1;
+            GRID_SIZE = LENGTH * WIDTH * HEIGHT;
         }
 
 
         @Override
-        public SparseIntArray buildGrid() {
+        public ArrayMap<Position, Integer> buildGrid() {
 
-            float density = mContext.getResources().getDisplayMetrics().density;
-            int dpTile = 40;
-            int pxTile = dpTile * (int) density;
+            Log.d(TAG, "Inside buildGrid()");
 
-            int tile;       // For every space on the GridLayout, create an ImageView
+            for (int l = 0; l < LENGTH; l++) {
+                for (int w = 0; w < WIDTH; w++) {
+                    int tile = R.drawable.tile;
 
-            for (int i = 0; i < GRID_SIZE; i++) {       // i is the model id
-                int j =R.drawable.tile;      // j is the view value
-                if (i%5 == 0) {
-                    j = R.drawable.tile2;
+                    if (w*l % 5 == 0) {
+                        tile = R.drawable.tile2;
+                    } else if (w*l % 7 == 0) {
+                        tile = R.drawable.tile3;
+                    }
+                    Position pos = new Position(w, l, 0);
+                    if (l == 20 && w == 20) {
+                        mHero.setCurrentPosition(pos);
+                    }
+                    Log.d(TAG, "Tile ResId: " + tile);
+                    tiles.put(pos, tile);
+                    Log.d(TAG, pos.toString());
                 }
-                else if (i%7 == 0) {
-                    j = R.drawable.tile3;
-                }
-                tiles.append(i, j);                                // Adds a random tile to the sparsearray
-                Log.d(TAG, "Inside buildGrid()");
             }
 
             return tiles;
@@ -89,13 +96,19 @@ public class LevelEngineer {
         }
 
         @Override
-        public void buildHeroes() {
-            // To-do
+        public ArrayMap<Position, Hero[]> buildHeroes() {
+            ArrayMap mHeroes;
+
+            mHeroes = new ArrayMap();
+            return mHeroes;
         }
 
         @Override
-        public void buildEnemies() {
-            // To-do
+        public ArrayMap<Position, Enemy> buildEnemies() {
+            ArrayMap mEnemies;
+
+            mEnemies = new ArrayMap();
+            return mEnemies;
         }
     }
 }

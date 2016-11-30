@@ -3,6 +3,8 @@ package com.gmail.dtcrowder.dev.chasm;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArrayMap;
+import android.support.v4.util.SparseArrayCompat;
 import android.text.Layout;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -16,16 +18,21 @@ import android.widget.LinearLayout;
 /**
  * Created by David Crowder on 10/28/2016.
  */
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GameFragment extends Fragment {
 
+    private Hero mMainHero;
     private LevelEngineer mEngineer;
-    private SparseIntArray mGrid;
+    private ArrayMap<Position, Integer> mGrid;
     private GridLayout mGridLayout;
-    private ImageView mCurrentTile;
+    private Integer mCurrentTile;
+    private Level mCurrentLevel;
+    private int mIndex = 0;
 
     public final String TAG = "Grid";
     //private ImageView mTile;
@@ -33,23 +40,36 @@ public class GameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Load initial level view
+        mMainHero = new Hero(UUID.randomUUID());
+        mCurrentLevel = new Level(mIndex);
+
         View v = inflater.inflate(R.layout.fragment_game, container, false);
-        mEngineer = new LevelEngineer(getContext());
+        mEngineer = new LevelEngineer(mCurrentLevel, mMainHero);
         mEngineer.orderGrid();
+        //mEngineer.orderHeroes();
+        //mEngineer.orderEnemies();
         mGrid = mEngineer.getGrid();
         GridLayout mGridLayout = (GridLayout) v.findViewById(R.id.LevelGrid);
-        ImageView mCurrentTile = (ImageView) v.findViewById(R.id.tile);
+        Position pos = mMainHero.getCurrentPosition();
+        pos.setX(pos.getX()-4);
+        pos.setY(pos.getY()-4);
+        for (int j = 0; j < 9; j++) {
+            for (int i = 0; i < 9; i++) {
+                // TODO: 11/27/2016 mGrid.get(pos) is only returning tile3
+                ImageView mTile = (ImageView) inflater.inflate(R.layout.tile, container, false);
+                Log.d(TAG, "Current tile: " + mGrid.get(pos));
+                mCurrentTile = mGrid.get(pos);
 
-        /** TODO: 10/31/2016 Encapsulate Grid build in LevelBuilder
-         *  It's important that the fragment knows nothing about how a level is built.
-         *  This allows for the builder to be used in any class.
-         */
+                mTile.setImageResource(mCurrentTile);
+                mGridLayout.addView(mTile);
+                Log.d(TAG, "Before X+ " + pos.toString());
+                pos.setX(pos.getX()+1);
+                Log.d(TAG, "After X+ " + pos.toString());
 
-        for (int i = 0; i < 81; i++) {
-
-            ImageView mTile = (ImageView) inflater.inflate(R.layout.tile, null);
-            mTile.setImageResource(mGrid.get(i));
-            mGridLayout.addView(mTile);
+            }
+            pos.setY(pos.getY()+1);
+            pos.setX(pos.getX()-9);
         }
 
         return v;

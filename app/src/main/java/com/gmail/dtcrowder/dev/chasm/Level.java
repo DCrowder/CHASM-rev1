@@ -1,23 +1,28 @@
 package com.gmail.dtcrowder.dev.chasm;
 
+import java.io.IOException;
+
 /**
- * Created by David Crowder on 11/3/2016.
+ * Created by David Crowder on 11/26/2016.
  */
 
-public interface Level {
-
-    int[][][] mGridImages = {};    // x, y, z values of the grid
-
-    int[][][] mHeroImages = {};    // initial location of hero(es)
-
-    int[][][] mEnemyImages = {};   // initial location of enemies
-    
-    // // TODO: 11/4/2016 Add methods for pulling info from SQLite.
-
-    // Insert SQL query here
-    int[][][] fetchLevel();
+public class Level {
 
 
+
+    public Level(int index) {
+
+        switch (index) {
+            case 0:
+                // fetch level code
+                break;
+            default:
+                // do nothing
+                break;
+        }
+
+
+    }
 
 
 }
