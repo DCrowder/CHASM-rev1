@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.gmail.dtcrowder.dev.chasm"
         minSdkVersion 16
@@ -25,7 +25,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.google.firebase:firebase-auth:9.8.0'
     compile 'com.google.firebase:firebase-core:9.8.0'
     compile 'com.google.firebase:firebase-database:9.8.0'
@@ -37,7 +37,14 @@ dependencies {
     compile 'com.google.firebase:firebase-invites:9.8.0'
     compile 'com.google.firebase:firebase-ads:9.8.0'
     compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+
+    compile 'io.reactivex:rxjava:1.2.4'
+    compile 'io.reactivex:rxandroid:1.2.1'
+
+    testCompile "org.robolectric:robolectric:3.1.4"
     testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:shadows-support-v4:3.1.4"
 }
 
 apply plugin: 'com.google.gms.google-services'
+

@@ -1,5 +1,7 @@
 package com.gmail.dtcrowder.dev.chasm;
 
+import android.support.v4.util.ArrayMap;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -12,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class LevelFetcher {
 
-    private Grid mGrid;
+    private ArrayMap<Position, Integer> mGrid;
     private DatabaseReference mDatabase;
 
 

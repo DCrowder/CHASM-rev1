@@ -4,10 +4,15 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 /**
+ * Position is an general use object that contains 3D coordinates.
+ * This object is used in collections to represent a position in the game.
+ * Simply create a position object by passing in the initial coordinates.
+ * The fields are meant to be updated for iteration purposes.
+ *
  * Created by David Crowder on 11/27/2016.
  */
 
-class Position implements Comparable<Position> {
+class Position extends MoveCommand implements Comparable<Position> {
 
     private int mX;
     private int mY;
@@ -47,82 +52,12 @@ class Position implements Comparable<Position> {
     }
 
 
-    void setPosition(int command) {
-
-        /** the position command is based on the numpad:
-         *            ^ fore
-         * < port       x      starboard >
-         *            v aft
-         *
-         * 789
-         * 456
-         * 123
-         *  0
-         */
-
-        boolean mValid = true;
-
-        // TODO: 11/26/2016 add verification logic to ensure position is only changed in a valid condition
-
-        if (mValid) {
-
-            switch (command) {
-
-
-                case 8: // fore
-
-                    mY += 1;
-                    break;
-                case 9: // fore and starboard
-                    mY += 1;
-                    mX += 1;
-                    break;
-                case 7: // fore and port
-                    mY += 1;
-                    mX -= 1;
-                    break;
-
-                case 6: // starboard
-                    mX += 1;
-                    break;
-                case 4: // port
-                    mX -= 1;
-                    break;
-
-                case 2: // aft
-                    mY -= 1;
-                    break;
-                case 3: // aft and starboard
-                    mY -= 1;
-                    mX += 1;
-                    break;
-                case 1: // aft and port
-                    mY -= 1;
-                    mX -= 1;
-                    break;
-
-                case 5: // up
-                    mZ += 1;
-                    break;
-                case 0: // down
-                    mZ -= 1;
-                    break;
-
-                default: // no action if cases not met
-                    break;
-            }
-
-        }
-
-    }
 
 
     /** This implementation of compareTo aims to organize the order of the position
      *  so the collection can create a natural order where Z, Y, X are the most critical fields
      *  in descending order.
      *
-     * @param p
-     * @return
      */
 
 
@@ -195,9 +130,9 @@ class Position implements Comparable<Position> {
         }
 
         // ensure position values are the same
-        if (pos.mX == mX) {
-            if (pos.mY == mY) {
-                if (pos.mZ == mZ) {
+        if (pos.getX() == mX) {
+            if (pos.getY() == mY) {
+                if (pos.getZ() == mZ) {
                     return true;
                 }      // return true iff all values match
             }

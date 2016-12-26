@@ -60,8 +60,8 @@ public class LevelEngineer {
             Log.d(TAG, "Builder constructor called");
             mHero = hero;
             tiles = new ArrayMap<>();                 // Create a new ArrayMap of tiles for the builder
-            LENGTH = 50;
-            WIDTH = 50;
+            LENGTH = 200;
+            WIDTH = 200;
             HEIGHT = 1;
             GRID_SIZE = LENGTH * WIDTH * HEIGHT;
         }
@@ -74,20 +74,23 @@ public class LevelEngineer {
 
             for (int l = 0; l < LENGTH; l++) {
                 for (int w = 0; w < WIDTH; w++) {
-                    int tile = R.drawable.tile;
+
+                    Position pos = new Position(w, l, 0);
+                    Integer tile = R.drawable.tile;
+
 
                     if (w*l % 5 == 0) {
                         tile = R.drawable.tile2;
                     } else if (w*l % 7 == 0) {
                         tile = R.drawable.tile3;
                     }
-                    Position pos = new Position(w, l, 0);
-                    if (l == 20 && w == 20) {
+
+
+                    tiles.put(pos, tile);
+
+                    if (w == 50 && l == 50) {
                         mHero.setCurrentPosition(pos);
                     }
-                    Log.d(TAG, "Tile ResId: " + tile);
-                    tiles.put(pos, tile);
-                    Log.d(TAG, pos.toString());
                 }
             }
 
